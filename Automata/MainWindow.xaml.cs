@@ -71,7 +71,7 @@ namespace Automata
                 //    //myMethod.Invoke(obj, null);
                 //    string retVal = (string)myMethod.Invoke(null, null);
                 //    MessageBox.Show(retVal);
-                //}
+                //} 
 
                 mScriptsAssembly = mScriptsDomain.Load(AssemblyName.GetAssemblyName(fInfoDll.FullName));
                 //mScriptsAssembly = Assembly.LoadFrom("Scripts.dll");
