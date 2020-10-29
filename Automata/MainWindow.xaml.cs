@@ -20,7 +20,6 @@ namespace Automata
 
         private string mWatchPath = @"F:\Development\Tools-Automata-Scripts" ;
         private FileSystemWatcher watcher = new FileSystemWatcher();
-        private Assembly mScriptsAssembly = null;
         private AppDomain mScriptsDomain = null;
         public MainWindow()
         {
@@ -31,8 +30,8 @@ namespace Automata
 
         private void InitializeAppDomain()
         {
-            FileInfo fInfoDll = new FileInfo("Scripts.dll");
-            FileInfo fInfoPdb = new FileInfo("Scripts.pdb");
+            FileInfo fInfoDll = new FileInfo(@"Builds\Scripts.dll");
+            FileInfo fInfoPdb = new FileInfo(@"Builds\Scripts.pdb");
             if (fInfoDll.Exists)
             {
                 try
@@ -45,7 +44,7 @@ namespace Automata
                     mScriptsDomain = AppDomain.CreateDomain("Automata Scripts Domain", evidence, setup);
 
                     Type proxyType = typeof(DomainProxy);
-                    DomainProxy proxy = (DomainProxy)mScriptsDomain.CreateInstanceFromAndUnwrap(proxyType.Assembly.FullName, proxyType.FullName);
+                    DomainProxy proxy = (DomainProxy)mScriptsDomain.CreateInstanceFromAndUnwrap(proxyType.Assembly.Location, proxyType.FullName);
 
                     proxy.LoadDll(fInfoDll.FullName);
                     string retVal = proxy.GetStringTest();
@@ -103,7 +102,7 @@ namespace Automata
                 if (mScriptsDomain != null)
                 {
                     AppDomain.Unload(mScriptsDomain);
-                    mScriptsAssembly = null;
+                    
                     mScriptsDomain = null;
                     GC.Collect();
                     
@@ -120,7 +119,7 @@ namespace Automata
 
                 parameters.GenerateExecutable = false;
 
-                parameters.OutputAssembly = "Scripts.dll";
+                parameters.OutputAssembly = @"Builds\Scripts.dll";
 
                 parameters.WarningLevel = 3;
 
